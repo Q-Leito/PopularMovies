@@ -1,0 +1,23 @@
+<RelativeLayout
+    android:id="@+id/movie_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/light_background"
+    tools:context=".MainActivity">
+
+    <include
+        android:id="@+id/toolBar"
+        layout="@layout/toolbar"/>
+
+    <fragment
+        android:id="@+id/movieFragment"
+        android:name="com.freedom_mobile.popularmovies.ui.MovieFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolBar"
+        tools:layout="@layout/fragment_movie"/>
+
+</RelativeLayout>
