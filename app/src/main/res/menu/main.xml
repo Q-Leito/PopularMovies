@@ -5,7 +5,6 @@
 
     <item
         android:id="@+id/action_popular"
-        android:icon="@mipmap/ic_arrow_drop_down_white_36dp"
         android:orderInCategory="100"
         android:title="@string/mostPopular"
         app:showAsAction="never"/>
