@@ -108,7 +108,7 @@ public class MovieDetailsFragment extends Fragment
             Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/w780/" + moviePoster)
                     .into(mImageView);
 
-            mTextView.setText(movieOverView + " " + getString(R.string.loremIpsum));
+            mTextView.setText(movieOverView);
             mReleaseDateView.setText("Release date: " + movieReleaseDate);
             mRatingView.setText("Movie rating: " + String.valueOf(movieRating) + "/10");
         }
