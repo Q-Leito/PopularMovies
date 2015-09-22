@@ -139,10 +139,10 @@ public class MainActivity extends AppCompatActivity
         List<MovieData.MovieDataItem> ratedList =
                 new ArrayList<>(mRating.values());
         Collections.sort(ratedList, new RatedComparator());
-        int i = 0;
+        int id = 0;
         for (MovieData.MovieDataItem movieDataItem : ratedList){
-            i++;
-            mRating.put(String.valueOf(i-1), movieDataItem);
+            id++;
+            mRating.put(String.valueOf(id - 1), movieDataItem);
         }
         MovieAdapter movieAdapter = new MovieAdapter(mRating);
         movieAdapter.notifyItemRangeChanged(0, mRating.size(), null);
