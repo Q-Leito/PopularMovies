@@ -11,12 +11,12 @@ import com.freedom_mobile.popularmovies.R;
 import com.freedom_mobile.popularmovies.model.MovieData;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import java.util.Map;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
-    private List<MovieData.MovieDataItem> mMovieData;
+    private Map<String, MovieData.MovieDataItem> mMovieData;
 
-    public MovieAdapter(List<MovieData.MovieDataItem> movieData) {
+    public MovieAdapter(Map<String,MovieData.MovieDataItem> movieData) {
         mMovieData = movieData;
     }
 
@@ -30,13 +30,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        String ImageFiles = mMovieData.get(position).getMoviePoster();
+        String ImageFiles = mMovieData.get(String.valueOf(position)).getMoviePoster();
 
         Picasso.with(viewHolder.getImageView().getContext())
                 .load("http://image.tmdb.org/t/p/w185/" + ImageFiles)
                 .into(viewHolder.getImageView());
 
-        viewHolder.getTextView().setText(mMovieData.get(position).getTitle());
+        viewHolder.getTextView().setText(mMovieData.get(String.valueOf(position)).getTitle());
     }
 
     @Override

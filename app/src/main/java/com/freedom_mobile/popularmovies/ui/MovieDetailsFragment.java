@@ -109,8 +109,9 @@ public class MovieDetailsFragment extends Fragment
                     .into(mImageView);
 
             mTextView.setText(movieOverView);
-            mReleaseDateView.setText("Release date: " + movieReleaseDate);
-            mRatingView.setText("Movie rating: " + String.valueOf(movieRating) + "/10");
+            mReleaseDateView.setText(getString(R.string.releaseDate) + movieReleaseDate);
+            mRatingView.setText(getString(R.string.movieRating) + String.valueOf(movieRating)
+                    + getString(R.string.maxRating));
         }
 
         return view;
@@ -126,7 +127,7 @@ public class MovieDetailsFragment extends Fragment
         windowManager.getDefaultDisplay().getSize(size);
         mWidth = size.x;
 
-        if (getResources().getBoolean(R.bool.portrait_only)) {
+        if (!getResources().getBoolean(R.bool.isTablet)) {
             mGradientView = getActivity().findViewById(R.id.gradientHeader);
             mGradientView.bringToFront();
             mToolbarView = (Toolbar) getActivity().findViewById(R.id.toolBar);
@@ -185,7 +186,7 @@ public class MovieDetailsFragment extends Fragment
 
     @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
-        if (getResources().getBoolean(R.bool.portrait_only)) {
+        if (!getResources().getBoolean(R.bool.isTablet)) {
             int baseColor = getResources().getColor(R.color.primary);
             float alpha = 1 - (float) Math.max(0, mParallaxImageHeight - scrollY) / mParallaxImageHeight;
             mToolbarView.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));

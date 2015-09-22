@@ -1,8 +1,7 @@
 package com.freedom_mobile.popularmovies.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MovieData {
@@ -10,7 +9,7 @@ public class MovieData {
     /**
      * An array of movies.
      */
-    public static List<MovieDataItem> MOVIE_DATA = new ArrayList<>();
+    public static Map<String, MovieDataItem> MOVIE_DATA = new LinkedHashMap<>();
 
     /**
      * A map of movies, by ID.
@@ -18,8 +17,12 @@ public class MovieData {
     public static Map<String, MovieDataItem> MOVIE_DATA_ITEM = new HashMap<>();
 
     public void addMovie(MovieDataItem movieDataItem) {
-        MOVIE_DATA.add(movieDataItem);
-        MOVIE_DATA_ITEM.put(movieDataItem.mId, movieDataItem);
+        if (!MOVIE_DATA.containsKey(movieDataItem.getId())) {
+            MOVIE_DATA.put(movieDataItem.getId(), movieDataItem);
+        }
+        if (!MOVIE_DATA_ITEM.containsKey(movieDataItem.getId())) {
+            MOVIE_DATA_ITEM.put(movieDataItem.getId(), movieDataItem);
+        }
     }
 
     /**

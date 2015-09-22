@@ -124,4 +124,15 @@
 
     </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
 
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:scaleType="center"
+        android:src="@mipmap/ic_star_outline_white_38dp"
+        app:fab_colorNormal="@color/fab_primary"
+        app:fab_colorPressed="@color/fab_pressed"
+        app:fab_colorRipple="@color/fab_ripple"/>
+
 </FrameLayout>

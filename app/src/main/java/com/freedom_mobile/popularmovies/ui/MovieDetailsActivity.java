@@ -1,6 +1,5 @@
 package com.freedom_mobile.popularmovies.ui;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -28,8 +27,6 @@ public class MovieDetailsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
 
-        screenOrientation();
-
         setupToolbar();
 
         // savedInstanceState is non-null when there is fragment state
@@ -53,14 +50,6 @@ public class MovieDetailsActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.movieDetailsFragment, movieDetailsFragment,
                             MovieDetailsFragment.TAG).commit();
-        }
-    }
-
-    private void screenOrientation() {
-        if (getResources().getBoolean(R.bool.portrait_only)) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else if (getResources().getBoolean(R.bool.landscape_only)) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
     }
 

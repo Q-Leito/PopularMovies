@@ -79,4 +79,7 @@
         posuere elit ea sed pellentesque quis. Sunt lacus urna lorem elit duis, nibh donec purus quisque consectetuer
         dolor, Nulla vel lobortis ullamcorper vitae excepturi, neque urna feugiat lectus vel lacinia,
     </string>
+    <string name="releaseDate">Release date:</string>
+    <string name="movieRating">Movie rating:</string>
+    <string name="maxRating">/10</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.freedom_mobile.popularmovies.ui;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,8 +13,10 @@ import com.freedom_mobile.popularmovies.model.MovieData;
 import com.freedom_mobile.popularmovies.utils.PopularComparator;
 import com.freedom_mobile.popularmovies.utils.RatedComparator;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An activity representing a list of Movies. This activity
@@ -43,15 +44,13 @@ public class MainActivity extends AppCompatActivity
      * device.
      */
     private boolean mTwoPane;
-    private List<MovieData.MovieDataItem> mPopularity = MovieData.MOVIE_DATA;
-    private List<MovieData.MovieDataItem> mRating = MovieData.MOVIE_DATA;
+    private Map<String, MovieData.MovieDataItem> mPopularity = MovieData.MOVIE_DATA;
+    private Map<String, MovieData.MovieDataItem> mRating = MovieData.MOVIE_DATA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        screenOrientation();
 
         setupToolbar();
 
@@ -61,21 +60,6 @@ public class MainActivity extends AppCompatActivity
             // res/values-sw600dp). If this view is present, then the
             // activity should be in two-pane mode.
             mTwoPane = true;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-    }
-
-    private void screenOrientation() {
-        if (getResources().getBoolean(R.bool.portrait_only)) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else if (getResources().getBoolean(R.bool.landscape_only)) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
     }
 
@@ -128,12 +112,20 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_popular:
-                Collections.sort(mPopularity, new PopularComparator());
+                List<MovieData.MovieDataItem> popularityList =
+                        new ArrayList<>(mPopularity.values());
+                Collections.sort(popularityList, new PopularComparator());
+                for (MovieData.MovieDataItem movieDataItem : popularityList)
+                    mPopularity.put(movieDataItem.getId(), movieDataItem);
                 MovieAdapter movieAdapter = new MovieAdapter(mPopularity);
                 movieAdapter.notifyItemRangeChanged(0, mPopularity.size(), null);
                 break;
             case R.id.action_high_rated:
-                Collections.sort(mRating, new RatedComparator());
+                List<MovieData.MovieDataItem> ratedList =
+                        new ArrayList<>(mRating.values());
+                Collections.sort(ratedList, new RatedComparator());
+                for (MovieData.MovieDataItem movieDataItem : ratedList)
+                    mRating.put(movieDataItem.getId(), movieDataItem);
                 MovieAdapter adapter = new MovieAdapter(mRating);
                 adapter.notifyItemRangeChanged(0, mRating.size(), null);
                 break;

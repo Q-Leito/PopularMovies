@@ -2,6 +2,7 @@ package com.freedom_mobile.popularmovies.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -45,9 +46,10 @@ import butterknife.ButterKnife;
  */
 public class MovieFragment extends Fragment {
     public static final String TAG = MovieFragment.class.getSimpleName();
-    private static final String LIST_STATE = "list_state";
+    public static final String LIST_STATE = "list_state";
     public static final int PORTRAIT_MODE = 2;
-    public static final int LANDSCAPE_MODE = 3;
+    public static final int LANDSCAPE_TABLET_MODE = 3;
+    public static final int LANDSCAPE_MODE = 4;
 
     private Callbacks mCallbacks;
     private MovieData mMovieData;
@@ -87,15 +89,22 @@ public class MovieFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (getActivity() != null) {
+            getMovieData();
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getMovieData();
     }
 
     @Override
     public void onAttach(Activity activity) {
-//        mAppCompatActivity = (AppCompatActivity) activity;
         super.onAttach(activity);
 
         // Activities containing this fragment must implement its callbacks.
@@ -114,7 +123,7 @@ public class MovieFragment extends Fragment {
     }
 
     private void getMovieData() {
-        String apiKey = "{API_KEY_HERE}";
+        String apiKey = "72b63cb24a921caf0d85ad5decf78bce";
         String sortBy = "popularity";
         String movieUrl = "http://api.themoviedb.org/3/discover/movie?sort_by="
                 + sortBy + ".desc&api_key=" + apiKey;
@@ -136,15 +145,19 @@ public class MovieFragment extends Fragment {
                 public void onResponse(Response response) throws IOException {
                     try {
                         String jsonData = response.body().string();
-                        Log.i(TAG, jsonData);
+//                        Log.i(TAG, jsonData);
                         if (response.isSuccessful()) {
-                            mMovieData = getMovieDetails(jsonData);
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    updateDisplay();
-                                }
-                            });
+                            if (mMovieData == null) {
+                                mMovieData = getMovieDetails(jsonData);
+                            }
+                            if (getActivity() != null) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        updateDisplay();
+                                    }
+                                });
+                            }
                         } else {
                             alertAboutError();
                         }
@@ -201,19 +214,24 @@ public class MovieFragment extends Fragment {
 
         mRecyclerView.addItemDecoration(new SpacesItemDecoration((int) recyclerViewSpacing));
         mRecyclerView.setHasFixedSize(true);
-        if (getResources().getBoolean(R.bool.portrait_only)) {
-            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), PORTRAIT_MODE));
-        } else if (getResources().getBoolean(R.bool.landscape_only)) {
-            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), LANDSCAPE_MODE));
+        if (getActivity() != null) {
+            if (getActivity().getResources().getConfiguration().orientation
+                    == Configuration.ORIENTATION_PORTRAIT) {
+                mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), PORTRAIT_MODE));
+            } else if (getActivity().getResources().getConfiguration().orientation
+                    == Configuration.ORIENTATION_LANDSCAPE && getResources().getBoolean(R.bool.isTablet)) {
+                mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), LANDSCAPE_TABLET_MODE));
+            } else if (getActivity().getResources().getConfiguration().orientation
+                    == Configuration.ORIENTATION_LANDSCAPE && !getResources().getBoolean(R.bool.isTablet)) {
+                mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), LANDSCAPE_MODE));
+            }
         }
         mRecyclerView.setAdapter(new MovieAdapter(MovieData.MOVIE_DATA));
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), mRecyclerView,
                 new RecyclerTouchListener.ClickListener() {
                     @Override
                     public void onClick(View view, int position) {
-                        mCallbacks.onMovieSelected(MovieData.MOVIE_DATA.get(position).getId());
-//                        Toast.makeText(getActivity(), MovieData.MOVIE_DATA.get(position).getTitle(),
-//                                Toast.LENGTH_LONG).show();
+                        mCallbacks.onMovieSelected(MovieData.MOVIE_DATA.get(String.valueOf(position)).getId());
                     }
 
                     @Override
@@ -225,6 +243,8 @@ public class MovieFragment extends Fragment {
 
     private void alertAboutError() {
         AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
-        alertDialogFragment.show(getActivity().getFragmentManager(), "error_dialog");
+        if (getActivity() != null) {
+            alertDialogFragment.show(getActivity().getFragmentManager(), "error_dialog");
+        }
     }
 }
