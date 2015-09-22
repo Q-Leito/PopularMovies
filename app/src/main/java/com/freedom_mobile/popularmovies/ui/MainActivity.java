@@ -109,25 +109,12 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_popular:
-                List<MovieData.MovieDataItem> popularityList =
-                        new ArrayList<>(mPopularity.values());
-                Collections.sort(popularityList, new PopularComparator());
-                for (MovieData.MovieDataItem movieDataItem : popularityList)
-                    mPopularity.put(movieDataItem.getId(), movieDataItem);
-                MovieAdapter movieAdapter = new MovieAdapter(mPopularity);
-                movieAdapter.notifyItemRangeChanged(0, mPopularity.size(), null);
+                popularSorting();
                 break;
             case R.id.action_high_rated:
-                List<MovieData.MovieDataItem> ratedList =
-                        new ArrayList<>(mRating.values());
-                Collections.sort(ratedList, new RatedComparator());
-                for (MovieData.MovieDataItem movieDataItem : ratedList)
-                    mRating.put(movieDataItem.getId(), movieDataItem);
-                MovieAdapter adapter = new MovieAdapter(mRating);
-                adapter.notifyItemRangeChanged(0, mRating.size(), null);
+                ratedSorting();
                 break;
 //            case R.id.action_favorite:
 //
@@ -135,5 +122,29 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void popularSorting() {
+        List<MovieData.MovieDataItem> popularityList =
+                new ArrayList<>(mPopularity.values());
+        Collections.sort(popularityList, new PopularComparator());
+        mPopularity.clear();
+        for (MovieData.MovieDataItem movieDataItem : popularityList)
+            mPopularity.put(movieDataItem.getId(), movieDataItem);
+        MovieAdapter movieAdapter = new MovieAdapter(mPopularity);
+        movieAdapter.notifyItemRangeChanged(0, mPopularity.size(), null);
+    }
+
+    private void ratedSorting() {
+        List<MovieData.MovieDataItem> ratedList =
+                new ArrayList<>(mRating.values());
+        Collections.sort(ratedList, new RatedComparator());
+        int i = 0;
+        for (MovieData.MovieDataItem movieDataItem : ratedList){
+            i++;
+            mRating.put(String.valueOf(i-1), movieDataItem);
+        }
+        MovieAdapter movieAdapter = new MovieAdapter(mRating);
+        movieAdapter.notifyItemRangeChanged(0, mRating.size(), null);
     }
 }
