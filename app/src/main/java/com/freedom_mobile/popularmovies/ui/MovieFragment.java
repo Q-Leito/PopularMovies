@@ -51,8 +51,8 @@ public class MovieFragment extends Fragment {
     public static final int LANDSCAPE_TABLET_MODE = 3;
     public static final int LANDSCAPE_MODE = 4;
     public static final String KEY_MOVIE_DATA = "movie_data";
-    @Bind(R.id.popularMoviesRecyclerView)
-    RecyclerView mRecyclerView;
+
+    @Bind(R.id.popularMoviesRecyclerView) RecyclerView mRecyclerView;
     private Callbacks mCallbacks;
     private MovieData mMovieData;
 
@@ -107,7 +107,7 @@ public class MovieFragment extends Fragment {
     }
 
     private void getMovieData() {
-        String apiKey = /*"{API_KEY_HERE}"*/ "72b63cb24a921caf0d85ad5decf78bce";
+        String apiKey = "{API_KEY_HERE}";
         String sortBy = "popularity";
         String movieUrl = "http://api.themoviedb.org/3/discover/movie?sort_by="
                 + sortBy + ".desc&api_key=" + apiKey;

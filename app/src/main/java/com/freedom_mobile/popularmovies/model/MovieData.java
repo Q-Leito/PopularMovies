@@ -13,6 +13,25 @@ import java.util.Map;
  */
 public class MovieData implements Parcelable {
 
+    /**
+     * An map of movies, by ID.
+     */
+    public static Map<String, MovieData> MOVIE_DATA = new LinkedHashMap<>();
+
+    /**
+     * A map of movies, by ID.
+     */
+    public static Map<String, MovieData> MOVIE_DATA_ITEM = new HashMap<>();
+
+    public void addMovie(MovieData movieDataItem) {
+        if (!MOVIE_DATA.containsKey(movieDataItem.getId())) {
+            MOVIE_DATA.put(movieDataItem.getId(), movieDataItem);
+        }
+        if (!MOVIE_DATA_ITEM.containsKey(movieDataItem.getId())) {
+            MOVIE_DATA_ITEM.put(movieDataItem.getId(), movieDataItem);
+        }
+    }
+
     // Parcel keys
     private static final String KEY_ID = "movie_id";
     private static final String KEY_TITLE = "title";
@@ -21,40 +40,7 @@ public class MovieData implements Parcelable {
     private static final String KEY_MOVIE_POSTER = "movie_poster";
     private static final String KEY_POPULARITY = "popularity";
     private static final String KEY_RATING = "rating";
-    /**
-     * Creator required for class implementing the parcelable interface.
-     */
-    public static final Parcelable.Creator<MovieData> CREATOR = new Parcelable.Creator<MovieData>() {
 
-        @Override
-        public MovieData createFromParcel(Parcel source) {
-            // Read the bundle containing key value pairs from the parcel
-            Bundle bundle = source.readBundle();
-
-            // Instantiate a movie using values from the bundle
-            return new MovieData(
-                    bundle.getString(KEY_ID),
-                    bundle.getString(KEY_TITLE),
-                    bundle.getString(KEY_OVERVIEW),
-                    bundle.getString(KEY_RELEASE_DATE),
-                    bundle.getString(KEY_MOVIE_POSTER),
-                    bundle.getDouble(KEY_POPULARITY),
-                    bundle.getDouble(KEY_RATING));
-        }
-
-        @Override
-        public MovieData[] newArray(int size) {
-            return new MovieData[size];
-        }
-    };
-    /**
-     * An map of movies, by ID.
-     */
-    public static Map<String, MovieData> MOVIE_DATA = new LinkedHashMap<>();
-    /**
-     * A map of movies, by ID.
-     */
-    public static Map<String, MovieData> MOVIE_DATA_ITEM = new HashMap<>();
     private String mId;
     private String mTitle;
     private String mOverview;
@@ -76,15 +62,6 @@ public class MovieData implements Parcelable {
         mMoviePoster = moviePoster;
         mPopularity = popularity;
         mRating = rating;
-    }
-
-    public void addMovie(MovieData movieDataItem) {
-        if (!MOVIE_DATA.containsKey(movieDataItem.getId())) {
-            MOVIE_DATA.put(movieDataItem.getId(), movieDataItem);
-        }
-        if (!MOVIE_DATA_ITEM.containsKey(movieDataItem.getId())) {
-            MOVIE_DATA_ITEM.put(movieDataItem.getId(), movieDataItem);
-        }
     }
 
     public String getId() {
@@ -136,4 +113,31 @@ public class MovieData implements Parcelable {
 
         dest.writeBundle(bundle);
     }
+
+    /**
+     * Creator required for class implementing the parcelable interface.
+     */
+    public static final Parcelable.Creator<MovieData> CREATOR = new Parcelable.Creator<MovieData>() {
+
+        @Override
+        public MovieData createFromParcel(Parcel source) {
+            // Read the bundle containing key value pairs from the parcel
+            Bundle bundle = source.readBundle();
+
+            // Instantiate a movie using values from the bundle
+            return new MovieData(
+                    bundle.getString(KEY_ID),
+                    bundle.getString(KEY_TITLE),
+                    bundle.getString(KEY_OVERVIEW),
+                    bundle.getString(KEY_RELEASE_DATE),
+                    bundle.getString(KEY_MOVIE_POSTER),
+                    bundle.getDouble(KEY_POPULARITY),
+                    bundle.getDouble(KEY_RATING));
+        }
+
+        @Override
+        public MovieData[] newArray(int size) {
+            return new MovieData[size];
+        }
+    };
 }
