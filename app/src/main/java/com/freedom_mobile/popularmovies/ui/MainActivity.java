@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity
      * device.
      */
     private boolean mTwoPane;
-    private Map<String, MovieData.MovieDataItem> mPopularity = MovieData.MOVIE_DATA;
-    private Map<String, MovieData.MovieDataItem> mRating = MovieData.MOVIE_DATA;
+    private Map<String, MovieData> mPopularity = MovieData.MOVIE_DATA;
+    private Map<String, MovieData> mRating = MovieData.MOVIE_DATA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,24 +125,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void popularSorting() {
-        List<MovieData.MovieDataItem> popularityList =
+        List<MovieData> popularityList =
                 new ArrayList<>(mPopularity.values());
         Collections.sort(popularityList, new PopularComparator());
         mPopularity.clear();
-        for (MovieData.MovieDataItem movieDataItem : popularityList)
-            mPopularity.put(movieDataItem.getId(), movieDataItem);
+        for (MovieData movieData : popularityList)
+            mPopularity.put(movieData.getId(), movieData);
         MovieAdapter movieAdapter = new MovieAdapter(mPopularity);
         movieAdapter.notifyItemRangeChanged(0, mPopularity.size(), null);
     }
 
     private void ratedSorting() {
-        List<MovieData.MovieDataItem> ratedList =
+        List<MovieData> ratedList =
                 new ArrayList<>(mRating.values());
         Collections.sort(ratedList, new RatedComparator());
         int i = 0;
-        for (MovieData.MovieDataItem movieDataItem : ratedList){
+        for (MovieData movieData : ratedList) {
             i++;
-            mRating.put(String.valueOf(i-1), movieDataItem);
+            mRating.put(String.valueOf(i - 1), movieData);
         }
         MovieAdapter movieAdapter = new MovieAdapter(mRating);
         movieAdapter.notifyItemRangeChanged(0, mRating.size(), null);

@@ -55,7 +55,7 @@ public class MovieDetailsFragment extends Fragment
     @Bind(R.id.scrollView) ObservableScrollView mScrollView;
     @Bind(R.id.fab) View mFab;
 
-    private MovieData.MovieDataItem mMovieDataItem;
+    private MovieData mMovieData;
     private Toolbar mToolbarView;
     private View mGradientView;
     private int mParallaxShowFabOffset;
@@ -80,7 +80,7 @@ public class MovieDetailsFragment extends Fragment
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mMovieDataItem = MovieData.MOVIE_DATA_ITEM.get(getArguments().getString(MOVIE_ID));
+            mMovieData = MovieData.MOVIE_DATA_ITEM.get(getArguments().getString(MOVIE_ID));
         }
 
 
@@ -93,12 +93,12 @@ public class MovieDetailsFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
         ButterKnife.bind(this, view);
 
-        if (mMovieDataItem != null) {
-            String movieTitle = mMovieDataItem.getTitle();
-            String movieOverView = mMovieDataItem.getOverview();
-            String movieReleaseDate = mMovieDataItem.getReleaseDate();
-            String moviePoster = mMovieDataItem.getMoviePoster();
-            double movieRating = mMovieDataItem.getRating();
+        if (mMovieData != null) {
+            String movieTitle = mMovieData.getTitle();
+            String movieOverView = mMovieData.getOverview();
+            String movieReleaseDate = mMovieData.getReleaseDate();
+            String moviePoster = mMovieData.getMoviePoster();
+            double movieRating = mMovieData.getRating();
 
             ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
             if (actionBar != null) {

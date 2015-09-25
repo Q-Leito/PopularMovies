@@ -14,9 +14,9 @@ import com.squareup.picasso.Picasso;
 import java.util.Map;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
-    private Map<String, MovieData.MovieDataItem> mMovieData;
+    private Map<String, MovieData> mMovieData;
 
-    public MovieAdapter(Map<String,MovieData.MovieDataItem> movieData) {
+    public MovieAdapter(Map<String, MovieData> movieData) {
         mMovieData = movieData;
     }
 

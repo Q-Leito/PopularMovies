@@ -50,32 +50,29 @@ public class MovieFragment extends Fragment {
     public static final int PORTRAIT_MODE = 2;
     public static final int LANDSCAPE_TABLET_MODE = 3;
     public static final int LANDSCAPE_MODE = 4;
-
+    public static final String KEY_MOVIE_DATA = "movie_data";
+    @Bind(R.id.popularMoviesRecyclerView)
+    RecyclerView mRecyclerView;
     private Callbacks mCallbacks;
     private MovieData mMovieData;
-    @Bind(R.id.popularMoviesRecyclerView) RecyclerView mRecyclerView;
-
-    /**
-     * A callback interface that all activities containing this fragment must
-     * implement. This mechanism allows activities to be notified of item
-     * selections.
-     */
-    public interface Callbacks {
-        /**
-         * Callback for when a movie has been selected.
-         */
-        void onMovieSelected(String id);
-    }
-
-    public static Fragment newInstance() {
-        return new MovieFragment();
-    }
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public MovieFragment() {
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // Activities containing this fragment must implement its callbacks.
+        if (!(activity instanceof Callbacks)) {
+            throw new IllegalStateException("Activity must implement fragment's callbacks.");
+        }
+
+        mCallbacks = (Callbacks) activity;
     }
 
     @Override
@@ -92,27 +89,13 @@ public class MovieFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        if (savedInstanceState != null) {
+            mMovieData = savedInstanceState.getParcelable(KEY_MOVIE_DATA);
+        }
+
         if (getActivity() != null) {
             getMovieData();
         }
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        // Activities containing this fragment must implement its callbacks.
-        if (!(activity instanceof Callbacks)) {
-            throw new IllegalStateException("Activity must implement fragment's callbacks.");
-        }
-
-        mCallbacks = (Callbacks) activity;
     }
 
     @Override
@@ -120,10 +103,11 @@ public class MovieFragment extends Fragment {
         super.onSaveInstanceState(state);
         int recyclerState = mRecyclerView.getScrollState();
         state.putInt(LIST_STATE, recyclerState);
+        state.putParcelable(KEY_MOVIE_DATA, mMovieData);
     }
 
     private void getMovieData() {
-        String apiKey = "{API_KEY_HERE}";
+        String apiKey = /*"{API_KEY_HERE}"*/ "72b63cb24a921caf0d85ad5decf78bce";
         String sortBy = "popularity";
         String movieUrl = "http://api.themoviedb.org/3/discover/movie?sort_by="
                 + sortBy + ".desc&api_key=" + apiKey;
@@ -195,7 +179,7 @@ public class MovieFragment extends Fragment {
         for (int i = 0; i < results.length(); i++) {
             JSONObject resultsArray = results.getJSONObject(i);
 
-            mMovieData.addMovie(new MovieData.MovieDataItem(
+            mMovieData.addMovie(new MovieData(
                     String.valueOf(i),
                     resultsArray.getString("original_title"),
                     resultsArray.getString("overview"),
@@ -246,5 +230,17 @@ public class MovieFragment extends Fragment {
         if (getActivity() != null) {
             alertDialogFragment.show(getActivity().getFragmentManager(), "error_dialog");
         }
+    }
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callbacks {
+        /**
+         * Callback for when a movie has been selected.
+         */
+        void onMovieSelected(String id);
     }
 }
