@@ -19,7 +19,6 @@ import com.freedom_mobile.popularmovies.R;
 import com.freedom_mobile.popularmovies.adapters.MovieAdapter;
 import com.freedom_mobile.popularmovies.model.MovieData;
 import com.freedom_mobile.popularmovies.utils.AlertDialogFragment;
-import com.freedom_mobile.popularmovies.utils.ApiKey;
 import com.freedom_mobile.popularmovies.utils.RecyclerTouchListener;
 import com.freedom_mobile.popularmovies.utils.SpacesItemDecoration;
 import com.squareup.okhttp.Callback;
