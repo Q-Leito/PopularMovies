@@ -109,7 +109,7 @@ public class MovieFragment extends Fragment {
 
     private void getMovieData() {
         String apiKey = ApiKey.API_KEY;
-        String sortBy = "popularity";
+        String sortBy = "popularity2";
         String movieUrl = "http://api.themoviedb.org/3/discover/movie?sort_by="
                 + sortBy + ".desc&api_key=" + apiKey;
 
