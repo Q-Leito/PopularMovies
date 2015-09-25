@@ -30,10 +30,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        String ImageFiles = mMovieData.get(String.valueOf(position)).getMoviePoster();
+        String imageFiles = mMovieData.get(String.valueOf(position)).getMoviePoster();
 
         Picasso.with(viewHolder.getImageView().getContext())
-                .load("http://image.tmdb.org/t/p/w185/" + ImageFiles)
+                .load("http://image.tmdb.org/t/p/w185/" + imageFiles)
                 .into(viewHolder.getImageView());
 
         viewHolder.getTextView().setText(mMovieData.get(String.valueOf(position)).getTitle());

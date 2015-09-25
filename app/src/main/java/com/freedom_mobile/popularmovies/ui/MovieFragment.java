@@ -19,6 +19,7 @@ import com.freedom_mobile.popularmovies.R;
 import com.freedom_mobile.popularmovies.adapters.MovieAdapter;
 import com.freedom_mobile.popularmovies.model.MovieData;
 import com.freedom_mobile.popularmovies.utils.AlertDialogFragment;
+import com.freedom_mobile.popularmovies.utils.ApiKey;
 import com.freedom_mobile.popularmovies.utils.RecyclerTouchListener;
 import com.freedom_mobile.popularmovies.utils.SpacesItemDecoration;
 import com.squareup.okhttp.Callback;
@@ -107,7 +108,7 @@ public class MovieFragment extends Fragment {
     }
 
     private void getMovieData() {
-        String apiKey = "{API_KEY_HERE}";
+        String apiKey = ApiKey.API_KEY;
         String sortBy = "popularity";
         String movieUrl = "http://api.themoviedb.org/3/discover/movie?sort_by="
                 + sortBy + ".desc&api_key=" + apiKey;
